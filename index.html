@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Neon Apex Racing is a stylish browser arcade racer with boost, drifting, traffic, a day-night cycle, and mobile touch controls.">
+  <title>Neon Apex Racing</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="shell">
+    <canvas id="game" aria-label="Neon Apex Racing"></canvas>
+
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <section class="hud" aria-live="polite">
+      <div class="brand-panel panel">
+        <p class="eyebrow">Solar Grand Prix</p>
+        <h1>Neon Apex</h1>
+        <p id="modeSubcopy" class="subcopy">Classic mode active</p>
+        <div class="brand-actions">
+          <button id="musicButton" class="music-toggle hud-button" type="button">Music: On</button>
+          <button id="pauseHudButton" class="hud-button" type="button">Pause</button>
+          <button id="menuHudButton" class="hud-button" type="button">Menu</button>
+          <button id="settingsHudButton" class="hud-button" type="button">Settings</button>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <article class="panel metric-card metric-primary">
+          <span class="metric-label">Speed</span>
+          <strong id="speedValue">000</strong>
+          <small>km/h</small>
+        </article>
+
+        <article class="panel metric-card metric-primary">
+          <span class="metric-label">Lap</span>
+          <strong id="lapValue">1 / 3</strong>
+          <small>current run</small>
+        </article>
+
+        <article class="panel metric-card metric-primary">
+          <span class="metric-label">Time</span>
+          <strong id="timeValue">00:00.00</strong>
+          <small>race clock</small>
+        </article>
+
+        <article class="panel metric-card metric-secondary">
+          <span class="metric-label">Last Lap</span>
+          <strong id="lapTimeValue">--:--.--</strong>
+          <small>split</small>
+        </article>
+
+        <article class="panel metric-card metric-secondary">
+          <span class="metric-label">Score</span>
+          <strong id="scoreValue">000000</strong>
+          <small>style points</small>
+        </article>
+
+        <article class="panel metric-card metric-secondary">
+          <span class="metric-label">Combo</span>
+          <strong id="comboValue">x1</strong>
+          <small>chain</small>
+        </article>
+      </div>
+
+      <div class="status-stack">
+        <div class="panel bar-panel status-primary">
+          <div class="bar-header">
+            <span>Nitro</span>
+            <strong id="nitroValue">100%</strong>
+          </div>
+          <div class="meter">
+            <div id="nitroFill" class="meter-fill nitro"></div>
+          </div>
+        </div>
+
+        <div class="panel bar-panel status-primary">
+          <div class="bar-header">
+            <span>Integrity</span>
+            <strong id="integrityValue">100%</strong>
+          </div>
+          <div class="meter">
+            <div id="integrityFill" class="meter-fill integrity"></div>
+          </div>
+        </div>
+
+        <div class="panel progress-panel status-secondary">
+          <div class="bar-header">
+            <span>Track Progress</span>
+            <strong id="progressValue">0%</strong>
+          </div>
+          <div class="progress-track">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="panel bar-panel status-secondary">
+          <div class="bar-header">
+            <span>Combo Window</span>
+            <strong id="comboWindowValue">Ready</strong>
+          </div>
+          <div class="meter">
+            <div id="comboFill" class="meter-fill combo"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="countdown" class="countdown" aria-live="assertive"></div>
+      <div id="toast" class="toast" aria-live="assertive"></div>
+    </section>
+
+    <section id="overlay" class="overlay visible">
+      <div class="panel intro-panel">
+        <p id="overlayEyebrow" class="eyebrow">High-End Arcade Prototype</p>
+        <h2 id="overlayTitle">Launch Into Neon Apex</h2>
+        <p id="overlayCopy" class="intro-copy">
+          A fast, stylish browser racer built as a self-contained prototype. Hit the apex, dodge traffic,
+          manage nitro, thread near-miss chains, capture surge gates, and finish three dusk laps with the
+          best time you can post.
+        </p>
+
+        <div id="menuPanel" class="overlay-panel-group">
+          <section class="launch-strip" aria-label="Game overview">
+            <div class="launch-copy-card">
+              <span>Quick Pitch</span>
+              <strong>Neon Apex Racing</strong>
+              <p>A premium-feeling neon arcade racer with browser-friendly controls, high-speed traffic weaving, and instant pick-up-and-play runs.</p>
+            </div>
+            <div class="launch-copy-card">
+              <span>Play Style</span>
+              <strong>Short, Stylish Runs</strong>
+              <p>Choose Classic, Time Attack, or Survival, then chase cleaner lines, faster laps, and louder near-miss moments.</p>
+            </div>
+          </section>
+
+          <section class="preview-gallery" aria-label="Preview shots">
+            <figure class="preview-card">
+              <img src="./screenshots/desktop-preview.png" alt="Desktop title screen preview for Neon Apex Racing">
+              <figcaption>Desktop-ready title screen and HUD layout.</figcaption>
+            </figure>
+            <figure class="preview-card preview-card-mobile">
+              <img src="./screenshots/mobile-preview.png" alt="Mobile preview for Neon Apex Racing">
+              <figcaption>Mobile layout with touch controls and readable HUD.</figcaption>
+            </figure>
+          </section>
+
+          <div class="idea-grid">
+            <div class="idea-card">
+              <span>New System</span>
+              <strong>Surge Gates</strong>
+              <p>Drive through energy arches to refill nitro, stabilize the chassis, and spike your score chain.</p>
+            </div>
+            <div class="idea-card">
+              <span>New System</span>
+              <strong>Near Miss Combo</strong>
+              <p>Skim traffic at speed to stack combo multipliers and turn clean driving into arcade-style points.</p>
+            </div>
+            <div class="idea-card">
+              <span>Graphics Push</span>
+              <strong>Reactive Skyline</strong>
+              <p>Aurora bands, cloud layers, road reflections, neon gates, and richer roadside set dressing.</p>
+            </div>
+          </div>
+
+          <div class="mode-grid" aria-label="Game modes">
+            <button class="mode-button active" type="button" data-mode="classic">
+              <span>Classic</span>
+              <strong>Grand Circuit</strong>
+              <p>Three clean laps through traffic with the full arcade ruleset.</p>
+            </button>
+            <button class="mode-button" type="button" data-mode="time_attack">
+              <span>Time Attack</span>
+              <strong>Beat The Clock</strong>
+              <p>Shorter run, tighter timer, and bonus seconds from surge gates and near misses.</p>
+            </button>
+            <button class="mode-button" type="button" data-mode="survival">
+              <span>Survival</span>
+              <strong>Pulse Run</strong>
+              <p>Endless neon pressure with heavier traffic and rising pace until you crash.</p>
+            </button>
+          </div>
+
+          <div class="control-grid">
+            <div class="control-card">
+              <span>Steer</span>
+              <strong>A / D or Arrow Keys</strong>
+            </div>
+            <div class="control-card">
+              <span>Throttle</span>
+              <strong>W / Up Arrow</strong>
+            </div>
+            <div class="control-card">
+              <span>Brake</span>
+              <strong>S / Down Arrow</strong>
+            </div>
+            <div class="control-card">
+              <span>Boost</span>
+              <strong>Space</strong>
+            </div>
+            <div class="control-card">
+              <span>Drift Bias</span>
+              <strong>Shift</strong>
+            </div>
+          <div class="control-card">
+            <span>Pause</span>
+            <strong>P</strong>
+          </div>
+          <div class="control-card">
+            <span>Horn</span>
+            <strong>Q / Touch</strong>
+          </div>
+        </div>
+
+          <p class="touch-hint">On mobile, use the on-screen steering and pedal controls that appear at the bottom of the screen.</p>
+        </div>
+
+        <section id="settingsPanel" class="settings-panel hidden" aria-label="Settings">
+          <div class="settings-grid">
+            <label class="settings-card" for="trafficDensityInput">
+              <div class="settings-head">
+                <span>Traffic Density</span>
+                <strong id="trafficDensityValue">100%</strong>
+              </div>
+              <input id="trafficDensityInput" class="settings-range" type="range" min="70" max="130" step="5" value="100">
+              <p>Changes how crowded each mode feels when you launch the next race.</p>
+            </label>
+
+            <label class="settings-card settings-toggle" for="cameraShakeInput">
+              <div class="settings-head">
+                <span>Camera Shake</span>
+                <strong id="cameraShakeValue">On</strong>
+              </div>
+              <input id="cameraShakeInput" type="checkbox" checked>
+              <p>Keeps collision and boost shakes cinematic, or turns them off for a steadier view.</p>
+            </label>
+
+            <label class="settings-card settings-toggle" for="dayNightCycleInput">
+              <div class="settings-head">
+                <span>Day / Night Cycle</span>
+                <strong id="dayNightCycleValue">On</strong>
+              </div>
+              <input id="dayNightCycleInput" type="checkbox" checked>
+              <p>Enables the three-stage visual cycle across day, sunset, and night while you race.</p>
+            </label>
+
+            <label class="settings-card settings-toggle" for="touchControlsInput">
+              <div class="settings-head">
+                <span>Touch Controls</span>
+                <strong id="touchControlsValue">On</strong>
+              </div>
+              <input id="touchControlsInput" type="checkbox" checked>
+              <p>Shows or hides the on-screen mobile controls for touch devices.</p>
+            </label>
+          </div>
+        </section>
+
+        <div class="action-row">
+          <button id="startButton" class="action-button">Launch Race</button>
+          <button id="resumeButton" class="ghost-button hidden">Resume</button>
+          <button id="restartButton" class="ghost-button hidden">Run Again</button>
+        </div>
+
+        <div class="action-row secondary-actions">
+          <button id="openSettingsButton" class="ghost-button">Settings</button>
+          <button id="backButton" class="ghost-button hidden">Back</button>
+          <button id="mainMenuButton" class="ghost-button hidden">Main Menu</button>
+        </div>
+
+        <p id="statusLine" class="status-line">Best run: none recorded yet.</p>
+      </div>
+    </section>
+
+    <section class="mobile-controls" aria-label="Touch controls">
+      <div class="touch-cluster steer-cluster">
+        <button class="touch-button steer" type="button" data-touch-input="left">Left</button>
+        <button class="touch-button steer" type="button" data-touch-input="right">Right</button>
+      </div>
+
+      <div class="touch-cluster drive-cluster">
+        <div class="touch-row">
+          <button class="touch-button aux horn" type="button" data-touch-input="horn">Horn</button>
+          <button class="touch-button aux" type="button" data-touch-input="drift">Drift</button>
+          <button class="touch-button aux" type="button" data-touch-input="boost">Boost</button>
+        </div>
+        <div class="touch-row">
+          <button class="touch-button brake" type="button" data-touch-input="brake">Brake</button>
+          <button class="touch-button throttle" type="button" data-touch-input="accelerate">Throttle</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./game.js"></script>
+</body>
+</html>
