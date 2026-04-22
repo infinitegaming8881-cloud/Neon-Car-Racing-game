@@ -11,6 +11,12 @@ const ui = {
   overlayEyebrow: document.getElementById("overlayEyebrow"),
   overlayTitle: document.getElementById("overlayTitle"),
   overlayCopy: document.getElementById("overlayCopy"),
+  modeSpotlightLabel: document.getElementById("modeSpotlightLabel"),
+  modeSpotlightTitle: document.getElementById("modeSpotlightTitle"),
+  modeSpotlightCopy: document.getElementById("modeSpotlightCopy"),
+  modeFactObjective: document.getElementById("modeFactObjective"),
+  modeFactTraffic: document.getElementById("modeFactTraffic"),
+  modeFactFeature: document.getElementById("modeFactFeature"),
   menuPanel: document.getElementById("menuPanel"),
   settingsPanel: document.getElementById("settingsPanel"),
   modeSubcopy: document.getElementById("modeSubcopy"),
@@ -75,44 +81,114 @@ const MODES = {
     name: "Classic",
     subtitle: "Classic mode active",
     overlayEyebrow: "Grand Circuit",
-    overlayTitle: "Launch Into Neon Apex",
-    overlayCopy: "Three full laps across the chrome desert with traffic, surge gates, and pure arcade pressure. Clean driving wins here.",
+    overlayTitle: "Neon Apex Racing",
+    overlayCopy: "Three full laps across the chrome desert with traffic, surge gates, slipstream lines, and pure arcade pressure.",
+    spotlightTitle: "Grand Circuit",
+    spotlightCopy: "Three clean laps through balanced traffic with surge gates and style-heavy arcade scoring.",
+    objectiveLabel: "3 Laps",
+    trafficLabel: "Balanced",
+    featureLabel: "Surge + Slipstream",
     laps: TOTAL_LAPS,
     trafficCount: 24,
     pickupSpacing: 58,
     timeLimit: null,
     endless: false,
     trafficPressure: 1,
+    integrityDrain: 0,
+    integrityRegen: 1.9,
+    slipstreamGain: 1,
     startToast: "Classic Mode. Three laps.",
+  },
+  sprint: {
+    id: "sprint",
+    name: "Sprint",
+    subtitle: "Sprint mode active",
+    overlayEyebrow: "One Lap Burst",
+    overlayTitle: "Neon Apex Racing",
+    overlayCopy: "A one-lap blast with lighter traffic, denser surge gates, and fast resets built for repeat runs.",
+    spotlightTitle: "One Lap Burst",
+    spotlightCopy: "Short blast, light traffic, denser gates, and almost no downtime between attempts.",
+    objectiveLabel: "1 Lap Dash",
+    trafficLabel: "Light",
+    featureLabel: "Dense Gates",
+    laps: 1,
+    trafficCount: 16,
+    pickupSpacing: 36,
+    timeLimit: null,
+    endless: false,
+    trafficPressure: 0.94,
+    integrityDrain: 0,
+    integrityRegen: 2.2,
+    slipstreamGain: 1.25,
+    startToast: "Sprint Mode. One lap.",
   },
   time_attack: {
     id: "time_attack",
     name: "Time Attack",
     subtitle: "Time attack mode active",
     overlayEyebrow: "Beat The Clock",
-    overlayTitle: "Hold The Line",
-    overlayCopy: "Two laps, a hard countdown, and bonus seconds from surge gates and near misses. Push, but do not clip the traffic.",
+    overlayTitle: "Neon Apex Racing",
+    overlayCopy: "Two laps, a hard countdown, and bonus seconds from surge gates, pulse chains, and near misses.",
+    spotlightTitle: "Beat The Clock",
+    spotlightCopy: "Timer-driven race where gates, near misses, and pulse chains keep the clock alive.",
+    objectiveLabel: "Timer Finish",
+    trafficLabel: "Focused",
+    featureLabel: "Clock Surge",
     laps: 2,
     trafficCount: 20,
     pickupSpacing: 46,
     timeLimit: 70,
     endless: false,
     trafficPressure: 1.06,
+    integrityDrain: 0,
+    integrityRegen: 1.6,
+    slipstreamGain: 1.1,
     startToast: "Time Attack. Clock is live.",
+  },
+  gauntlet: {
+    id: "gauntlet",
+    name: "Gauntlet",
+    subtitle: "Gauntlet mode active",
+    overlayEyebrow: "Integrity Test",
+    overlayTitle: "Neon Apex Racing",
+    overlayCopy: "Two laps while your chassis bleeds integrity. Gates, pulse chains, and clean speed keep the shell alive.",
+    spotlightTitle: "Integrity Run",
+    spotlightCopy: "Your chassis drains over time, so every gate, slipstream, and clean line matters.",
+    objectiveLabel: "2 Laps Alive",
+    trafficLabel: "Heavy",
+    featureLabel: "Integrity Drain",
+    laps: 2,
+    trafficCount: 28,
+    pickupSpacing: 44,
+    timeLimit: null,
+    endless: false,
+    trafficPressure: 1.12,
+    integrityDrain: 5.6,
+    integrityRegen: 0.75,
+    slipstreamGain: 1.05,
+    startToast: "Gauntlet Mode. Integrity bleeding.",
   },
   survival: {
     id: "survival",
     name: "Survival",
     subtitle: "Survival mode active",
     overlayEyebrow: "Pulse Run",
-    overlayTitle: "Stay Alive",
-    overlayCopy: "An endless neon gauntlet. Traffic gets faster as the run goes on, and your goal is simple: survive long enough to post a monster score.",
+    overlayTitle: "Neon Apex Racing",
+    overlayCopy: "An endless neon gauntlet. Traffic gets faster as the run goes on, and slipstream lanes become your only free speed.",
+    spotlightTitle: "Pulse Run",
+    spotlightCopy: "Endless traffic escalation with rising pace until the run finally breaks.",
+    objectiveLabel: "Survive",
+    trafficLabel: "Rising",
+    featureLabel: "Escalating Pace",
     laps: null,
     trafficCount: 30,
     pickupSpacing: 52,
     timeLimit: null,
     endless: true,
     trafficPressure: 1.18,
+    integrityDrain: 0,
+    integrityRegen: 1.9,
+    slipstreamGain: 1.15,
     startToast: "Survival Mode. Stay alive.",
   },
 };
@@ -139,6 +215,9 @@ const config = {
   centrifugal: 0.34,
   boostAccel: 9600,
   driftGripLoss: 3200,
+  jumpVelocity: 980,
+  jumpGravity: 3200,
+  jumpThreshold: 12,
 };
 
 config.cameraDepth = 1 / Math.tan(config.fieldOfView / 2);
@@ -181,6 +260,27 @@ const SCENE_PALETTES = {
     accentWarm: "#ffcf67",
     ember: "rgba(255, 207, 103, 0.08)",
   },
+  sprint: {
+    skyTop: "#07152f",
+    skyMid: "#0d3660",
+    skyBottom: "#ff974c",
+    roadDark: "#17233c",
+    roadLight: "#21395b",
+    grassDark: "#11202d",
+    grassLight: "#173345",
+    rumbleA: "#70f3ff",
+    rumbleB: "#ffc86b",
+    laneGlow: "rgba(132, 235, 255, 0.16)",
+    shoulder: "rgba(255, 238, 212, 0.1)",
+    horizonGlow: "rgba(125, 220, 255, 0.16)",
+    horizonWarm: "rgba(255, 188, 104, 0.14)",
+    sunCore: "rgba(255, 240, 199, 0.96)",
+    sunHalo: "rgba(255, 162, 85, 0.48)",
+    beam: "#7be7ff",
+    accent: "#76efff",
+    accentWarm: "#ffcf74",
+    ember: "rgba(255, 204, 124, 0.1)",
+  },
   time_attack: {
     skyTop: "#021322",
     skyMid: "#0c3255",
@@ -222,6 +322,27 @@ const SCENE_PALETTES = {
     accent: "#ff6d95",
     accentWarm: "#ffb86b",
     ember: "rgba(255, 146, 96, 0.1)",
+  },
+  gauntlet: {
+    skyTop: "#17070a",
+    skyMid: "#47111c",
+    skyBottom: "#8d331f",
+    roadDark: "#26151f",
+    roadLight: "#442434",
+    grassDark: "#211014",
+    grassLight: "#34151a",
+    rumbleA: "#ff916e",
+    rumbleB: "#ffcf67",
+    laneGlow: "rgba(255, 168, 112, 0.17)",
+    shoulder: "rgba(255, 221, 198, 0.09)",
+    horizonGlow: "rgba(255, 120, 96, 0.18)",
+    horizonWarm: "rgba(255, 194, 109, 0.14)",
+    sunCore: "rgba(255, 220, 174, 0.94)",
+    sunHalo: "rgba(255, 103, 86, 0.54)",
+    beam: "#ff7e68",
+    accent: "#ff9871",
+    accentWarm: "#ffd16c",
+    ember: "rgba(255, 178, 99, 0.13)",
   },
 };
 
@@ -445,11 +566,17 @@ const state = {
   flash: 0,
   countdown: 3.4,
   boostActive: false,
+  jumpHeight: 0,
+  jumpVelocity: 0,
+  jumpCooldown: 0,
   toastUntil: 0,
   score: 0,
   combo: 1,
   comboTimer: 0,
   comboMax: 2.8,
+  gateChain: 0,
+  gateChainTimer: 0,
+  slipstreamCharge: 0,
   zoneName: "Open Desert",
   selectedMode: "classic",
   modeTimeRemaining: 0,
@@ -469,6 +596,7 @@ const input = {
   brake: false,
   boost: false,
   drift: false,
+  jump: false,
   horn: false,
 };
 
@@ -716,6 +844,7 @@ function applyModePresentation() {
   DEFAULT_OVERLAY.title = mode.overlayTitle;
   DEFAULT_OVERLAY.copy = mode.overlayCopy;
   ui.modeSubcopy.textContent = mode.subtitle;
+  updateModeSpotlight(mode);
 
   for (const button of ui.modeButtons) {
     button.classList.toggle("active", button.dataset.mode === state.selectedMode);
@@ -724,6 +853,15 @@ function applyModePresentation() {
   if (ui.overlay.classList.contains("visible")) {
     refreshOverlayScreen();
   }
+}
+
+function updateModeSpotlight(mode) {
+  ui.modeSpotlightLabel.textContent = mode.name;
+  ui.modeSpotlightTitle.textContent = mode.spotlightTitle;
+  ui.modeSpotlightCopy.textContent = mode.spotlightCopy;
+  ui.modeFactObjective.textContent = mode.objectiveLabel;
+  ui.modeFactTraffic.textContent = mode.trafficLabel;
+  ui.modeFactFeature.textContent = mode.featureLabel;
 }
 
 function setOverlayContent(eyebrow, title, copy) {
@@ -750,6 +888,7 @@ function setButtonVisibility(button, visible, label) {
 
 function refreshOverlayScreen() {
   const hasActiveRun = state.started && !state.finished;
+  ui.overlay.dataset.screen = state.overlayScreen;
   ui.menuPanel.classList.toggle("hidden", state.overlayScreen !== OVERLAY_SCREENS.menu);
   ui.settingsPanel.classList.toggle("hidden", state.overlayScreen !== OVERLAY_SCREENS.settings);
 
@@ -826,6 +965,7 @@ function refreshOverlayScreen() {
 
 function showOverlayScreen(screen) {
   state.overlayScreen = screen;
+  ui.overlay.dataset.screen = screen;
   ui.overlay.classList.add("visible");
   refreshOverlayScreen();
   updateHudButtons();
@@ -1282,6 +1422,11 @@ function bindEvents() {
   window.addEventListener("resize", resize);
 
   window.addEventListener("keydown", (event) => {
+    if (event.repeat && event.code === "Space") {
+      event.preventDefault();
+      return;
+    }
+
     switch (event.code) {
       case "ArrowLeft":
       case "KeyA":
@@ -1300,8 +1445,11 @@ function bindEvents() {
         input.brake = true;
         break;
       case "Space":
-        input.boost = true;
+        queueJump();
         event.preventDefault();
+        break;
+      case "KeyE":
+        input.boost = true;
         break;
       case "ShiftLeft":
       case "ShiftRight":
@@ -1345,8 +1493,11 @@ function bindEvents() {
       case "KeyS":
         input.brake = false;
         break;
-      case "Space":
+      case "KeyE":
         input.boost = false;
+        break;
+      case "Space":
+        input.jump = false;
         break;
       case "ShiftLeft":
       case "ShiftRight":
@@ -1419,10 +1570,14 @@ function bindEvents() {
       }
 
       activeTouchInputs.set(event.pointerId, action);
-      input[action] = true;
+      if (action !== "jump") {
+        input[action] = true;
+      }
       button.classList.add("active");
       if (action === "horn") {
         startHorn();
+      } else if (action === "jump") {
+        queueJump();
       }
     });
 
@@ -1449,6 +1604,7 @@ function clearTouchInputs() {
   input.brake = false;
   input.boost = false;
   input.drift = false;
+  input.jump = false;
   input.horn = false;
   stopHorn();
 }
@@ -1463,7 +1619,9 @@ function releaseTouchInput(pointerId) {
 
   const hasAnotherPointerForAction = [...activeTouchInputs.values()].some((value) => value === action);
   if (!hasAnotherPointerForAction) {
-    input[action] = false;
+    if (action in input) {
+      input[action] = false;
+    }
     if (action === "horn") {
       stopHorn();
     }
@@ -1477,6 +1635,10 @@ function releaseTouchInput(pointerId) {
     const stillPressed = [...activeTouchInputs.values()].some((value) => value === action);
     button.classList.toggle("active", stillPressed);
   }
+}
+
+function queueJump() {
+  input.jump = true;
 }
 
 function resize() {
@@ -1511,6 +1673,7 @@ function buildTrack() {
   addRoad(18, 44, 18, 1.08, -74);
   addRoad(34, 70, 34, -0.72, 0);
   addStraight(80);
+  closeTrackSeam();
 
   trackLength = track.length * config.segmentLength;
   decorateTrack();
@@ -1536,6 +1699,16 @@ function addRoad(enter, hold, leave, curve, hill) {
   for (let n = 0; n < leave; n += 1) {
     addSegment(easeInOut(curve, 0, n / Math.max(leave, 1)), easeInOut(startY, endY, (enter + hold + n) / total));
   }
+}
+
+function closeTrackSeam() {
+  const seamHeight = lastY();
+  if (Math.abs(seamHeight) < 1) {
+    return;
+  }
+
+  // Bring the circuit back to the starting elevation so lap wrap stays visually continuous.
+  addRoad(36, 72, 36, 0, -seamHeight / config.segmentLength);
 }
 
 function addSegment(curve, y) {
@@ -1664,9 +1837,15 @@ function startRace() {
   state.flash = 0;
   state.countdown = 3.4;
   state.boostActive = false;
+  state.jumpHeight = 0;
+  state.jumpVelocity = 0;
+  state.jumpCooldown = 0;
   state.score = 0;
   state.combo = 1;
   state.comboTimer = 0;
+  state.gateChain = 0;
+  state.gateChainTimer = 0;
+  state.slipstreamCharge = 0;
   state.zoneName = "Open Desert";
   state.modeTimeRemaining = mode.timeLimit || 0;
   particles.length = 0;
@@ -1715,7 +1894,13 @@ function update(dt) {
       }
       updateTraffic(dt);
       updatePickups();
-      state.integrity = Math.min(100, state.integrity + 1.9 * dt);
+      const integrityFlow = (mode.integrityRegen ?? 1.9) - (mode.integrityDrain ?? 0);
+      state.integrity = clamp(state.integrity + integrityFlow * dt, 0, 100);
+      if (state.integrity <= 0) {
+        gameOver("Integrity Collapse", "The chassis bled out before the finish. In Gauntlet mode you need gates, pulse chains, and clean slipstream runs to keep the shell alive.");
+        updateHud();
+        return;
+      }
       const previousPosition = state.position;
       state.position = increase(state.position, state.speed * dt, trackLength);
 
@@ -1744,6 +1929,13 @@ function update(dt) {
     }
   }
 
+  if (state.gateChain > 0) {
+    state.gateChainTimer = Math.max(0, state.gateChainTimer - dt);
+    if (state.gateChainTimer === 0) {
+      state.gateChain = 0;
+    }
+  }
+
   updateCountdown();
   updateParticles(dt);
   state.shake = approach(state.shake, 0, dt * 7);
@@ -1762,6 +1954,10 @@ function updatePlayer(dt) {
   const speedPercent = state.speed / config.maxSpeed;
   const inSurgeZone = isSurgeZone(currentSegment.index);
   state.zoneName = inSurgeZone ? "Surge Corridor" : "Open Desert";
+
+  if (state.jumpCooldown > 0) {
+    state.jumpCooldown = Math.max(0, state.jumpCooldown - dt);
+  }
 
   let steerInput = 0;
   if (input.left) {
@@ -1782,6 +1978,25 @@ function updatePlayer(dt) {
   if (input.brake) {
     state.speed += config.braking * dt;
   }
+
+  if (input.jump && state.jumpHeight <= 0.01 && state.jumpCooldown === 0) {
+    state.jumpVelocity = config.jumpVelocity;
+    state.jumpCooldown = 0.24;
+    emitSparks("#8defff", 10);
+    state.shake = Math.max(state.shake, 0.24);
+  }
+  input.jump = false;
+
+  if (state.jumpHeight > 0 || state.jumpVelocity > 0) {
+    state.jumpHeight = Math.max(0, state.jumpHeight + state.jumpVelocity * dt);
+    state.jumpVelocity -= config.jumpGravity * dt;
+    if (state.jumpHeight === 0 && state.jumpVelocity < 0) {
+      state.jumpVelocity = 0;
+      emitDust();
+      state.shake = Math.max(state.shake, 0.34);
+    }
+  }
+  const airborne = state.jumpHeight > config.jumpThreshold;
 
   state.boostActive = false;
   if (input.boost && state.nitro > 0.5 && state.speed > config.maxSpeed * 0.18) {
@@ -1817,9 +2032,15 @@ function updatePlayer(dt) {
     state.nitro = Math.min(100, state.nitro + 5 * dt);
   }
 
-  handleNearMisses();
-  collectPickups();
-  handleTrafficCollisions();
+  if (!airborne && handleSlipstream(dt)) {
+    state.zoneName = "Slipstream Lock";
+  }
+
+  if (!airborne) {
+    handleNearMisses();
+    collectPickups();
+    handleTrafficCollisions();
+  }
 }
 
 function updateTraffic(dt) {
@@ -1845,6 +2066,38 @@ function updateTraffic(dt) {
 
     car.offset = clamp(car.offset, -0.9, 0.9);
   }
+}
+
+function handleSlipstream(dt) {
+  const playerWorldZ = increase(state.position, config.playerZ, trackLength);
+  const mode = currentMode();
+  let bestDistance = Infinity;
+
+  for (const car of traffic) {
+    const distanceAhead = wrappedDistance(car.z, playerWorldZ, trackLength);
+    if (distanceAhead < 140 || distanceAhead > 920) {
+      continue;
+    }
+
+    if (Math.abs(car.offset - state.playerX) > 0.18) {
+      continue;
+    }
+
+    bestDistance = Math.min(bestDistance, distanceAhead);
+  }
+
+  if (bestDistance === Infinity || state.speed < config.maxSpeed * 0.42) {
+    state.slipstreamCharge = approach(state.slipstreamCharge, 0, dt * 2.1);
+    return false;
+  }
+
+  const depth = 1 - clamp((bestDistance - 140) / 780, 0, 1);
+  const gain = mode.slipstreamGain || 1;
+  state.slipstreamCharge = clamp(state.slipstreamCharge + dt * (0.55 + depth * 0.95), 0, 1.2);
+  state.nitro = Math.min(100, state.nitro + dt * (4 + depth * 9) * gain);
+  state.speed = Math.min(config.maxSpeed * 1.07, state.speed + config.accel * 0.085 * depth * dt);
+  addScore((16 + depth * 22) * dt * gain, false);
+  return true;
 }
 
 function updatePickups() {
@@ -1936,11 +2189,31 @@ function collectPickups() {
       state.integrity = Math.min(100, state.integrity + 8);
       addScore(260, true);
       grantTimeBonus(4.5, "Clock Surge");
+      state.gateChain += 1;
+      state.gateChainTimer = 6.5;
+      const chainTriggered = state.gateChain >= 3;
+      if (chainTriggered) {
+        triggerPulseChain();
+      }
       state.flash = Math.max(state.flash, 0.3);
       emitSparks(pickup.color, 12);
-      showToast("Surge Gate");
+      if (!chainTriggered) {
+        showToast("Surge Gate");
+      }
     }
   }
+}
+
+function triggerPulseChain() {
+  state.gateChain = 0;
+  state.gateChainTimer = 0;
+  state.nitro = Math.min(100, state.nitro + 30);
+  state.integrity = Math.min(100, state.integrity + 14);
+  addScore(520, true);
+  grantTimeBonus(2.2, "Pulse Chain");
+  state.zoneName = "Pulse Chain";
+  emitSparks("#ffcf67", 20);
+  showToast("Pulse Chain");
 }
 
 function grantTimeBonus(amount, label) {
@@ -1976,6 +2249,9 @@ function gameOver(reason, detail) {
   state.speed = 0;
   state.nitro = 0;
   state.integrity = 0;
+  state.jumpHeight = 0;
+  state.jumpVelocity = 0;
+  state.jumpCooldown = 0;
   state.combo = 1;
   state.comboTimer = 0;
   state.overlayScreen = OVERLAY_SCREENS.gameover;
@@ -2015,6 +2291,9 @@ function finishRace() {
   clearTouchInputs();
   state.finished = true;
   state.paused = false;
+  state.jumpHeight = 0;
+  state.jumpVelocity = 0;
+  state.jumpCooldown = 0;
   rememberOverlayContent(
     mode.name,
     "Finish Line Secured",
@@ -2365,6 +2644,20 @@ function renderSkylineBeams(horizon, parallax, scene) {
 }
 
 function renderModeAtmospherics(horizon, scene) {
+  if (state.selectedMode === "sprint") {
+    ctx.strokeStyle = withAlpha(scene.accentWarm, 0.18 * scene.modeAtmosAlpha);
+    ctx.lineWidth = 1.4;
+    for (let i = 0; i < 14; i += 1) {
+      const x = wrap01(i * 0.082 + state.raceClock * 0.24) * state.width;
+      const y = horizon * (0.14 + (i % 5) * 0.08);
+      ctx.beginPath();
+      ctx.moveTo(x - 18, y + 26);
+      ctx.lineTo(x + 10, y - 18);
+      ctx.stroke();
+    }
+    return;
+  }
+
   if (state.selectedMode === "time_attack") {
     ctx.strokeStyle = withAlpha(scene.accent, 0.13 * scene.modeAtmosAlpha);
     ctx.lineWidth = 1.2;
@@ -2387,6 +2680,18 @@ function renderModeAtmospherics(horizon, scene) {
       ctx.fillStyle = withAlpha(scene.accentWarm, (0.12 + (i % 4) * 0.02) * scene.modeAtmosAlpha);
       ctx.beginPath();
       ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    return;
+  }
+
+  if (state.selectedMode === "gauntlet") {
+    for (let i = 0; i < 18; i += 1) {
+      const x = wrap01(i * 0.067 + state.raceClock * 0.018) * state.width;
+      const y = horizon * 0.2 + (i % 6) * 20 + Math.sin(state.raceClock * 0.8 + i) * 8;
+      ctx.fillStyle = withAlpha(scene.accentWarm, 0.14 * scene.modeAtmosAlpha);
+      ctx.beginPath();
+      ctx.ellipse(x, y, 2 + (i % 3), 7 + (i % 4) * 2, 0, 0, Math.PI * 2);
       ctx.fill();
     }
   }
@@ -2894,18 +3199,25 @@ function renderPlayerCar(timestamp) {
   const baseY = state.height * 0.83 + Math.sin(timestamp * 0.008) * 2;
   const width = Math.min(184, Math.max(118, state.width * 0.13));
   const height = width * 0.54;
+  const jumpLift = state.jumpHeight;
+  const airborne = jumpLift > config.jumpThreshold;
 
   ctx.save();
   ctx.translate(baseX, baseY);
-  ctx.rotate(state.steering * -0.045);
-
-  const shadowGradient = ctx.createRadialGradient(0, height * 0.86, 12, 0, height * 0.86, width * 0.95);
+  const shadowWidth = airborne ? width * 0.68 : width * 0.95;
+  const shadowHeight = airborne ? height * 0.24 : height * 0.42;
+  const shadowGradient = ctx.createRadialGradient(0, height * 0.86, 12, 0, height * 0.86, shadowWidth);
   shadowGradient.addColorStop(0, "rgba(0,0,0,0.44)");
   shadowGradient.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = shadowGradient;
   ctx.beginPath();
-  ctx.ellipse(0, height * 0.9, width * 0.95, height * 0.42, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, height * 0.9, shadowWidth, shadowHeight, 0, 0, Math.PI * 2);
   ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.translate(baseX, baseY - jumpLift);
+  ctx.rotate(state.steering * -0.045);
 
   if (state.boostActive) {
     ctx.fillStyle = withAlpha(scene.accent, 0.34);
@@ -2977,6 +3289,19 @@ function renderPlayerCar(timestamp) {
   ctx.moveTo(-width * 0.12, height * 0.76);
   ctx.lineTo(width * 0.12, height * 0.76);
   ctx.stroke();
+
+  if (airborne) {
+    ctx.strokeStyle = withAlpha(scene.accentWarm, 0.24);
+    ctx.lineWidth = Math.max(1, width * 0.012);
+    ctx.setLineDash([8, 10]);
+    ctx.beginPath();
+    ctx.moveTo(-width * 0.24, height * 0.94);
+    ctx.lineTo(-width * 0.08, height * 1.18);
+    ctx.moveTo(width * 0.24, height * 0.94);
+    ctx.lineTo(width * 0.08, height * 1.18);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
 
   if (state.boostActive) {
     const flameGradient = ctx.createLinearGradient(0, height * 0.72, 0, height * 1.28);

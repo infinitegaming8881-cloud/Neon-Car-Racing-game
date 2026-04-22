@@ -176,9 +176,9 @@ button {
 }
 
 .metric-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   grid-column: 1 / -1;
   grid-row: 2;
   align-self: start;
@@ -191,22 +191,49 @@ button {
 }
 
 .metric-card {
-  padding: 18px 20px;
+  min-width: 112px;
+  padding: 12px 14px;
+  border-radius: 18px;
+}
+
+.metric-primary {
+  min-width: 118px;
+}
+
+.metric-secondary {
+  min-width: 96px;
+  padding: 10px 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    rgba(5, 12, 25, 0.48);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .metric-card strong {
   display: block;
-  margin-top: 8px;
-  font-size: clamp(1.55rem, 3vw, 2.2rem);
-  letter-spacing: 0.08em;
+  margin-top: 4px;
+  font-size: clamp(1.05rem, 2vw, 1.48rem);
+  letter-spacing: 0.05em;
+}
+
+.metric-secondary strong {
+  font-size: clamp(0.92rem, 1.6vw, 1.08rem);
 }
 
 .metric-card small {
   display: block;
-  margin-top: 6px;
+  margin-top: 3px;
   color: var(--accent-cyan);
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
+  font-size: 0.56rem;
+}
+
+.metric-secondary small {
+  color: #b4d6eb;
 }
 
 .status-stack {
@@ -351,7 +378,7 @@ button {
 }
 
 .intro-panel {
-  width: min(860px, 100%);
+  width: min(980px, 100%);
   max-height: calc(100vh - 48px);
   overflow: auto;
   padding: clamp(24px, 5vw, 42px);
@@ -362,16 +389,136 @@ button {
   font-size: clamp(2.2rem, 6vw, 4.6rem);
 }
 
+.overlay-copy-stack {
+  display: grid;
+  gap: 12px;
+}
+
 .intro-copy {
-  max-width: 62ch;
-  margin: 14px 0 0;
+  max-width: 50ch;
+  margin: 0;
   color: #d8ebf7;
-  line-height: 1.7;
+  line-height: 1.62;
+}
+
+.overlay[data-screen="menu"] .overlay-copy-stack {
+  display: none;
 }
 
 .overlay-panel-group.hidden,
 .settings-panel.hidden {
   display: none;
+}
+
+.launch-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.launch-copy-column {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.launch-kicker,
+.launch-spotlight-label {
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+}
+
+.launch-mark {
+  font-family: "Agency FB", "Bahnschrift SemiCondensed", "Trebuchet MS", sans-serif;
+  font-size: clamp(2.5rem, 7vw, 4.8rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 0.96;
+  text-transform: uppercase;
+}
+
+.launch-summary {
+  max-width: 34ch;
+  margin: 0;
+  color: #deedf6;
+  font-size: 1.02rem;
+  line-height: 1.62;
+}
+
+.launch-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.launch-pill {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #d9eaf6;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+}
+
+.launch-spotlight {
+  padding: 20px 22px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(78, 231, 255, 0.12), transparent 44%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(5, 12, 25, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.launch-spotlight-title {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: 0.05em;
+}
+
+.launch-spotlight-copy {
+  margin: 12px 0 0;
+  color: #d6e6f0;
+  line-height: 1.58;
+}
+
+.launch-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.launch-stat {
+  padding: 12px 12px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.launch-stat span,
+.control-pill span {
+  display: block;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.64rem;
+}
+
+.launch-stat strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
 }
 
 .launch-strip {
@@ -499,13 +646,14 @@ body.capture-mobile .overlay.visible ~ .mobile-controls {
 
 .mode-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 22px;
 }
 
 .mode-button {
-  padding: 18px 18px 20px;
+  min-height: 168px;
+  padding: 16px 16px 18px;
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
@@ -527,14 +675,15 @@ body.capture-mobile .overlay.visible ~ .mobile-controls {
 .mode-button strong {
   display: block;
   margin-top: 8px;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   letter-spacing: 0.06em;
 }
 
 .mode-button p {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: #d1e4f0;
-  line-height: 1.55;
+  line-height: 1.48;
+  font-size: 0.92rem;
 }
 
 .mode-button:hover {
@@ -552,25 +701,26 @@ body.capture-mobile .overlay.visible ~ .mobile-controls {
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.control-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 28px;
+.control-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.control-card {
-  padding: 16px 18px;
+.control-pill {
+  min-width: 132px;
+  padding: 12px 14px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.control-card strong {
+.control-pill strong {
   display: block;
-  margin-top: 8px;
-  font-size: 1rem;
-  letter-spacing: 0.06em;
+  margin-top: 7px;
+  font-size: 0.94rem;
+  letter-spacing: 0.05em;
   color: var(--text-main);
 }
 
@@ -578,7 +728,7 @@ body.capture-mobile .overlay.visible ~ .mobile-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-top: 30px;
+  margin-top: 24px;
 }
 
 .secondary-actions {
@@ -620,10 +770,10 @@ body.capture-mobile .overlay.visible ~ .mobile-controls {
 }
 
 .touch-hint {
-  margin: 18px 0 0;
+  margin: 14px 0 0;
   color: #d7e6f1;
-  font-size: 0.92rem;
-  line-height: 1.55;
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
 
 .settings-panel {
@@ -689,6 +839,7 @@ body.capture-mobile .overlay.visible ~ .mobile-controls {
 .mobile-controls {
   position: absolute;
   inset: auto 0 0;
+  bottom: 0;
   display: none;
   justify-content: space-between;
   align-items: end;
@@ -776,6 +927,14 @@ body.capture-mobile .overlay.visible ~ .mobile-controls {
   min-height: 54px;
 }
 
+.touch-button.boost {
+  background: linear-gradient(135deg, rgba(94, 255, 190, 0.32), rgba(78, 231, 255, 0.14)), rgba(5, 13, 26, 0.84);
+}
+
+.touch-button.jump {
+  background: linear-gradient(135deg, rgba(126, 177, 255, 0.42), rgba(140, 239, 255, 0.16)), rgba(5, 13, 26, 0.84);
+}
+
 .touch-button.horn {
   background: linear-gradient(135deg, rgba(255, 216, 109, 0.42), rgba(255, 157, 82, 0.18)), rgba(5, 13, 26, 0.84);
 }
@@ -804,20 +963,11 @@ body.hide-touch-controls .mobile-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .idea-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .mode-grid {
-    grid-template-columns: 1fr;
-  }
-
   .settings-grid {
     grid-template-columns: 1fr;
   }
 
-  .launch-strip,
-  .preview-gallery {
+  .launch-hero {
     grid-template-columns: 1fr;
   }
 
@@ -881,8 +1031,8 @@ body.hide-touch-controls .mobile-controls {
     padding: 12px 14px;
   }
 
-  .control-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .launch-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .action-row {
@@ -924,7 +1074,7 @@ body.hide-touch-controls .mobile-controls {
   }
 
   .status-stack,
-  .control-grid {
+  .launch-stats {
     grid-template-columns: 1fr;
   }
 
@@ -936,23 +1086,39 @@ body.hide-touch-controls .mobile-controls {
     padding: 16px;
   }
 
-  .launch-copy-card,
-  .preview-card {
-    padding: 14px;
+  .launch-mark {
+    font-size: 2rem;
+  }
+
+  .launch-summary {
+    font-size: 0.92rem;
+  }
+
+  .launch-spotlight {
+    padding: 16px;
+  }
+
+  .mode-button {
+    min-height: 0;
+  }
+
+  .control-pill {
+    min-width: calc(50% - 5px);
   }
 }
 
 @media (hover: none), (pointer: coarse), (max-width: 900px) {
   .hud {
-    padding-bottom: max(184px, calc(150px + env(safe-area-inset-bottom)));
+    padding-bottom: max(236px, calc(196px + env(safe-area-inset-bottom)));
   }
 
   .mobile-controls {
     display: flex;
+    bottom: max(34px, calc(18px + env(safe-area-inset-bottom)));
   }
 
   .toast {
-    bottom: max(132px, calc(116px + env(safe-area-inset-bottom)));
+    bottom: max(176px, calc(146px + env(safe-area-inset-bottom)));
   }
 }
 
@@ -1006,7 +1172,7 @@ body.hide-touch-controls .mobile-controls {
     padding:
       max(10px, env(safe-area-inset-top))
       max(10px, env(safe-area-inset-right))
-      max(154px, calc(136px + env(safe-area-inset-bottom)))
+      max(214px, calc(184px + env(safe-area-inset-bottom)))
       max(10px, env(safe-area-inset-left));
   }
 
@@ -1099,6 +1265,7 @@ body.hide-touch-controls .mobile-controls {
 
   .mobile-controls {
     gap: 8px;
+    bottom: max(42px, calc(24px + env(safe-area-inset-bottom)));
     padding:
       10px
       max(10px, env(safe-area-inset-right))

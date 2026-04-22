@@ -113,107 +113,111 @@
 
     <section id="overlay" class="overlay visible">
       <div class="panel intro-panel">
-        <p id="overlayEyebrow" class="eyebrow">High-End Arcade Prototype</p>
-        <h2 id="overlayTitle">Launch Into Neon Apex</h2>
-        <p id="overlayCopy" class="intro-copy">
-          A fast, stylish browser racer built as a self-contained prototype. Hit the apex, dodge traffic,
-          manage nitro, thread near-miss chains, capture surge gates, and finish three dusk laps with the
-          best time you can post.
-        </p>
+        <div class="overlay-copy-stack">
+          <p id="overlayEyebrow" class="eyebrow">High-End Arcade Prototype</p>
+          <h2 id="overlayTitle">Launch Into Neon Apex</h2>
+          <p id="overlayCopy" class="intro-copy">
+            A fast, stylish browser racer built as a self-contained prototype. Hit the apex, dodge traffic,
+            manage nitro, thread near-miss chains, capture surge gates, and finish three dusk laps with the
+            best time you can post.
+          </p>
+        </div>
 
         <div id="menuPanel" class="overlay-panel-group">
-          <section class="launch-strip" aria-label="Game overview">
-            <div class="launch-copy-card">
-              <span>Quick Pitch</span>
-              <strong>Neon Apex Racing</strong>
-              <p>A premium-feeling neon arcade racer with browser-friendly controls, high-speed traffic weaving, and instant pick-up-and-play runs.</p>
+          <section class="launch-hero" aria-label="Launch overview">
+            <div class="launch-copy-column">
+              <span class="launch-kicker">Arcade Racing Protocol</span>
+              <strong class="launch-mark">Neon Apex Racing</strong>
+              <p class="launch-summary">Knife-edge traffic runs with drift, boost, slipstream lines, and five arcade playlists built for desktop and touch.</p>
+              <div class="launch-pill-row">
+                <span class="launch-pill">Five Modes</span>
+                <span class="launch-pill">Desktop + Touch</span>
+                <span class="launch-pill">Reactive Synth Audio</span>
+              </div>
             </div>
-            <div class="launch-copy-card">
-              <span>Play Style</span>
-              <strong>Short, Stylish Runs</strong>
-              <p>Choose Classic, Time Attack, or Survival, then chase cleaner lines, faster laps, and louder near-miss moments.</p>
+
+            <div class="launch-spotlight" aria-live="polite">
+              <span id="modeSpotlightLabel" class="launch-spotlight-label">Classic</span>
+              <strong id="modeSpotlightTitle" class="launch-spotlight-title">Grand Circuit</strong>
+              <p id="modeSpotlightCopy" class="launch-spotlight-copy">Three clean laps through balanced traffic with surge gates and style-heavy arcade scoring.</p>
+
+              <div class="launch-stats">
+                <div class="launch-stat">
+                  <span>Objective</span>
+                  <strong id="modeFactObjective">3 Laps</strong>
+                </div>
+                <div class="launch-stat">
+                  <span>Traffic</span>
+                  <strong id="modeFactTraffic">Balanced</strong>
+                </div>
+                <div class="launch-stat">
+                  <span>Special</span>
+                  <strong id="modeFactFeature">Surge + Slipstream</strong>
+                </div>
+              </div>
             </div>
           </section>
-
-          <section class="preview-gallery" aria-label="Preview shots">
-            <figure class="preview-card">
-              <img src="./screenshots/desktop-preview.png" alt="Desktop title screen preview for Neon Apex Racing">
-              <figcaption>Desktop-ready title screen and HUD layout.</figcaption>
-            </figure>
-            <figure class="preview-card preview-card-mobile">
-              <img src="./screenshots/mobile-preview.png" alt="Mobile preview for Neon Apex Racing">
-              <figcaption>Mobile layout with touch controls and readable HUD.</figcaption>
-            </figure>
-          </section>
-
-          <div class="idea-grid">
-            <div class="idea-card">
-              <span>New System</span>
-              <strong>Surge Gates</strong>
-              <p>Drive through energy arches to refill nitro, stabilize the chassis, and spike your score chain.</p>
-            </div>
-            <div class="idea-card">
-              <span>New System</span>
-              <strong>Near Miss Combo</strong>
-              <p>Skim traffic at speed to stack combo multipliers and turn clean driving into arcade-style points.</p>
-            </div>
-            <div class="idea-card">
-              <span>Graphics Push</span>
-              <strong>Reactive Skyline</strong>
-              <p>Aurora bands, cloud layers, road reflections, neon gates, and richer roadside set dressing.</p>
-            </div>
-          </div>
 
           <div class="mode-grid" aria-label="Game modes">
             <button class="mode-button active" type="button" data-mode="classic">
               <span>Classic</span>
               <strong>Grand Circuit</strong>
-              <p>Three clean laps through traffic with the full arcade ruleset.</p>
+              <p>Balanced arcade circuit with three laps and full scoring pressure.</p>
+            </button>
+            <button class="mode-button" type="button" data-mode="sprint">
+              <span>Sprint</span>
+              <strong>One Lap Burst</strong>
+              <p>Short blast, light traffic, denser gates, and fast restarts.</p>
             </button>
             <button class="mode-button" type="button" data-mode="time_attack">
               <span>Time Attack</span>
               <strong>Beat The Clock</strong>
-              <p>Shorter run, tighter timer, and bonus seconds from surge gates and near misses.</p>
+              <p>Timer-driven race where gates and near misses keep the clock alive.</p>
+            </button>
+            <button class="mode-button" type="button" data-mode="gauntlet">
+              <span>Gauntlet</span>
+              <strong>Integrity Run</strong>
+              <p>Your chassis drains over time, so every gate and clean line matters.</p>
             </button>
             <button class="mode-button" type="button" data-mode="survival">
               <span>Survival</span>
               <strong>Pulse Run</strong>
-              <p>Endless neon pressure with heavier traffic and rising pace until you crash.</p>
+              <p>Endless traffic escalation with rising pace until the run finally breaks.</p>
             </button>
           </div>
 
-          <div class="control-grid">
-            <div class="control-card">
+          <div class="control-ribbon" aria-label="Controls">
+            <div class="control-pill">
               <span>Steer</span>
-              <strong>A / D or Arrow Keys</strong>
+              <strong>A / D or Touch</strong>
             </div>
-            <div class="control-card">
+            <div class="control-pill">
               <span>Throttle</span>
-              <strong>W / Up Arrow</strong>
+              <strong>W / Up</strong>
             </div>
-            <div class="control-card">
+            <div class="control-pill">
               <span>Brake</span>
-              <strong>S / Down Arrow</strong>
+              <strong>S / Down</strong>
             </div>
-            <div class="control-card">
-              <span>Boost</span>
-              <strong>Space</strong>
+            <div class="control-pill">
+              <span>Jump</span>
+              <strong>Space / Touch</strong>
             </div>
-            <div class="control-card">
-              <span>Drift Bias</span>
+            <div class="control-pill">
+              <span>Drift</span>
               <strong>Shift</strong>
             </div>
-          <div class="control-card">
-            <span>Pause</span>
-            <strong>P</strong>
+            <div class="control-pill">
+              <span>Boost</span>
+              <strong>E / Touch</strong>
+            </div>
+            <div class="control-pill">
+              <span>Horn</span>
+              <strong>Q / Touch</strong>
+            </div>
           </div>
-          <div class="control-card">
-            <span>Horn</span>
-            <strong>Q / Touch</strong>
-          </div>
-        </div>
 
-          <p class="touch-hint">On mobile, use the on-screen steering and pedal controls that appear at the bottom of the screen.</p>
+          <p class="touch-hint">On phones, the control dock now sits higher above browser chrome and can be toggled in settings.</p>
         </div>
 
         <section id="settingsPanel" class="settings-panel hidden" aria-label="Settings">
@@ -281,10 +285,11 @@
       <div class="touch-cluster drive-cluster">
         <div class="touch-row">
           <button class="touch-button aux horn" type="button" data-touch-input="horn">Horn</button>
+          <button class="touch-button aux jump" type="button" data-touch-input="jump">Jump</button>
           <button class="touch-button aux" type="button" data-touch-input="drift">Drift</button>
-          <button class="touch-button aux" type="button" data-touch-input="boost">Boost</button>
         </div>
         <div class="touch-row">
+          <button class="touch-button aux boost" type="button" data-touch-input="boost">Boost</button>
           <button class="touch-button brake" type="button" data-touch-input="brake">Brake</button>
           <button class="touch-button throttle" type="button" data-touch-input="accelerate">Throttle</button>
         </div>
